@@ -1,0 +1,42 @@
+CREATE TABLE wiki_info (
+  id uuid PRIMARY KEY,
+  create_timestamp timestamptz,
+  timestamp timestamptz,
+  language text,
+  wiki text,
+  title text
+);
+
+CREATE TABLE category (
+  id uuid PRIMARY KEY,
+  text text
+);
+
+CREATE TABLE auxiliary_text (
+  id uuid PRIMARY KEY,
+  text text
+);
+
+CREATE TABLE wiki_info_by_auxiliary_text_rel (
+  id uuid PRIMARY KEY,
+  wiki_info_id uuid,
+  entity_id uuid
+);
+
+CREATE TABLE wiki_info_by_category_rel (
+  id uuid PRIMARY KEY,
+  wiki_info_id uuid,
+  entity_id uuid
+);
+
+ALTER TABLE wiki_info_by_auxiliary_text_rel
+    ADD CONSTRAINT fk_wiki_info_by_auxiliary_text_rel_wiki_info FOREIGN KEY (wiki_info_id) REFERENCES wiki_info (id);
+
+ALTER TABLE wiki_info_by_category_rel
+    ADD CONSTRAINT fk_wiki_info_by_auxiliary_text_rel_wiki_info FOREIGN KEY (wiki_info_id) REFERENCES wiki_info (id);
+
+ALTER TABLE auxiliary_text_rel
+    ADD CONSTRAINT fk_wiki_info_by_auxiliary_text_rel_wiki_info FOREIGN KEY (entity_id) REFERENCES auxiliary_text (id);
+
+ALTER TABLE category_rel
+    ADD CONSTRAINT fk_wiki_info_by_auxiliary_text_rel_wiki_info FOREIGN KEY (entity_id) REFERENCES category (id);
